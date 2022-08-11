@@ -106,6 +106,7 @@
                   id="names"
                   class="form-control"
                   placeholder="Enter names"
+                  required
                 />
                 <br />
                 <strong><label for="surnames">Surnames</label></strong>
@@ -115,6 +116,7 @@
                   id="surnames"
                   class="form-control"
                   placeholder="Enter surnames"
+                  required
                 />
                 <br />
                 <strong><label for="email">Email</label></strong>
