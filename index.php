@@ -29,11 +29,19 @@
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="css/styles.css" />
 
+    <!-- SWEET ALERT2 CSS -->
+    <link
+      rel="stylesheet"
+      href="./assets/plugins/SweetAlert/dist/sweetalert2.min.css"
+    />
+
     <title>Test PHP Basic</title>
   </head>
   <body>
     <div class="container bg-white">
-      <h1 class="text-center" style="color:rgba(0, 96, 138);">TEST PHP BASIC</h1>
+      <h1 class="text-center" style="color: rgba(0, 96, 138)">
+        TEST PHP BASIC
+      </h1>
 
       <div class="row">
         <div class="col-2 offset-10">
@@ -191,6 +199,12 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- SWEET ALERT2 JS -->
+    <script
+      type="text/javascript"
+      src="./assets/plugins/SweetAlert/dist/sweetalert2.all.min.js"
+    ></script>
+
     <script type="text/javascript">
       $(document).ready(function () {
         $("#btn-create").click(function () {
@@ -234,7 +248,16 @@
             if (
               jQuery.inArray(img_extension, ["gif", "png", "jpg", "jpeg"]) == -1
             ) {
-              alert("Invalid image format");
+              Swal.fire({
+                icon: "error",
+                title: "Image fotmat invalid!",
+                text: "Please check and try again!",
+                confirmButtonColor: "green",
+                confirmButtonText: "Ok!",
+                showCancelButton: false,
+                cancelButtonColor: "#d33",
+                timer: 3000,
+              });
               $("#person_image").val("");
               return false;
             }
@@ -248,14 +271,32 @@
               contentType: false,
               processData: false,
               success: function (data) {
-                alert(data);
+                Swal.fire({
+                  icon: "success",
+                  title: "Saved!",
+                  text: "Info saved successfully!",
+                  confirmButtonColor: "green",
+                  confirmButtonText: "Ok!",
+                  showCancelButton: false,
+                  cancelButtonColor: "#d33",
+                  timer: 3000,
+                });
                 $("#person_form")[0].reset();
                 $("#modalForm").modal("hide");
                 dataTable.ajax.reload();
               },
             });
           } else {
-            alert("Fields are required, please check");
+            Swal.fire({
+              icon: "error",
+              title: "Fields are required!",
+              text: "Please check and try again!",
+              confirmButtonColor: "green",
+              confirmButtonText: "Ok!",
+              showCancelButton: false,
+              cancelButtonColor: "#d33",
+              timer: 3000,
+            });
           }
         });
         /*************************************EDIT***************************************/
@@ -267,7 +308,7 @@
             data: { person_id: person_id },
             dataType: "json",
             success: function (data) {
-              console.log(data);
+              //console.log(data);
               $("#modalForm").modal("show");
               $("#exampleModalLabel").text("Edit Person Form");
               $("#names").val(data.names);
@@ -279,31 +320,45 @@
               $("#action_type").val("Edit");
               $("#operation_type").val("Edit");
             },
-            error: function(jqXHR, textStatus, errorThrown){
+            error: function (jqXHR, textStatus, errorThrown) {
               console.log(textStatus, errorThrown);
-            }
+            },
           });
         });
         /*************************************DELETE***************************************/
         $(document).on("click", ".delete", function () {
-            var person_id = $(this).attr("id");
-            if(confirm("Are you sure you want to delete this record?" + person_id))
-            {
+          var person_id = $(this).attr("id");
+          Swal.fire({
+            title: `Are you sure delete record id=${person_id}?`,
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "green",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+          }).then((result) => {
+            if (result.isConfirmed) {
               $.ajax({
                 url: "delete.php",
                 method: "POST",
                 data: { person_id: person_id },
-                success: function(data) 
-                {
-                  alert(data);
+                success: function (data) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Deleted!",
+                    text: "Record deleted successfully!!",
+                    confirmButtonColor: "green",
+                    confirmButtonText: "Ok!",
+                    showCancelButton: false,
+                    cancelButtonColor: "#d33",
+                    timer: 3000,
+                  });
                   dataTable.ajax.reload();
-                }
+                },
               });
-            }else{
-              return false;
-            } 
+            }
+          });
         });
-
       });
     </script>
   </body>
